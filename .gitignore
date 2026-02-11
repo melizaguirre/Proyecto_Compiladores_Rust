@@ -1,0 +1,16 @@
+# Binario final
+rust_parser
+
+# Carpeta de build
+build/
+
+# Archivos generados por Flex y Bison
+lex.yy.*
+parser.tab.*
+parser.output
+
+# Archivos objeto
+*.o
+
+# Backups
+*~
