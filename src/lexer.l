@@ -19,9 +19,37 @@ WS         [ \t\r]+
 %%
 
 
-{WS}                { /* ignore */ }
-\n                  { /* yylineno se actualiza solo */ }
+{WS}                
+\n                  
 
 /*Comentarios*/
-"//".*              { /* comentario de línea */ }
-/\*([^*]|\*+[^*/])*\*+/   { /* comentario bloque */ }
+"//".*              
+/\*([^*]|\*+[^*/])*\*+/   
+
+"i32"               { return T_I32; }
+"f64"               { return T_F64; }
+"bool"              { return T_BOOL; }
+"char"              { return T_CHAR; }
+"str"               { return T_STR; }
+
+"fn"                { return FN; }
+"let"               { return LET; }
+"if"                { return IF; }
+"else"              { return ELSE; }
+"while"             { return WHILE; }
+"for"               { return FOR; }
+"in"                { return IN; }
+"return"            { return RETURN; }
+
+"true"              { return TRUE; }
+"false"             { return FALSE; }
+
+"->"                { return ARROW; }
+
+"&&"                { return OP_AND; }
+"||"                { return OP_OR; }
+
+"=="                { return OP_EQ; }
+"!="                { return OP_NEQ; }
+"<="                { return OP_LE; }
+">="                { return OP_GE; }
