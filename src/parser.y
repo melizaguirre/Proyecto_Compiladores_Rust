@@ -23,3 +23,43 @@ void yyerror(const char* s);
 %start programa
 
 %%
+
+programa
+  : funciones
+  ;
+
+funciones
+  : /* empty */
+  | funcion funciones
+  ;
+
+funcion
+  : FN IDENT OPEN_PAR param_opt CLOSE_PAR ret_opt bloque
+  ;
+
+param_opt
+  : /* empty */
+  | parametro param_tail
+  ;
+
+param_tail
+  : /* empty */
+  | COMMA parametro param_tail
+  ;
+
+parametro
+  : IDENT COLON tipo
+  ;
+
+ret_opt
+  : /* empty */
+  | ARROW tipo
+  ;
+
+tipo
+  : T_I32
+  | T_F64
+  | T_BOOL
+  | T_CHAR
+  | T_STR
+  ;
