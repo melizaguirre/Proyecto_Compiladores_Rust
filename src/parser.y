@@ -63,3 +63,73 @@ tipo
   | T_CHAR
   | T_STR
   ;
+
+bloque
+  : OPEN_CURLY sentencias CLOSE_CURLY
+  ;
+
+sentencias
+  : /* empty */
+  | sentencia sentencias
+  ;
+
+sentencia
+  : let_stmt SEMICOLON
+  | id_stmt SEMICOLON
+  | return_stmt SEMICOLON
+  | if_sentencia
+  | while_sentencia
+  | for_sentencia
+  | bloque
+  ;
+
+let_stmt
+  : LET IDENT let_tipo_opt let_init_opt
+  ;
+
+let_tipo_opt
+  : /* empty */
+  | COLON tipo
+  ;
+
+let_init_opt
+  : /* empty */
+  | OP_ASSIGN expresion
+  ;
+
+id_stmt
+  : IDENT id_stmt_tail
+  ;
+
+id_stmt_tail
+  : OP_ASSIGN expresion
+  | OPEN_PAR argumentos_opt CLOSE_PAR
+  ;
+
+return_stmt
+  : RETURN expr_opt
+  ;
+
+
+expr_opt
+  : /* empty */
+  | expresion
+  ;
+
+if_sentencia
+  : IF expresion bloque else_opcional
+  ;
+
+else_opcional
+  : /* empty */
+  | ELSE bloque
+  | ELSE if_sentencia
+  ;
+
+while_sentencia
+  : WHILE expresion bloque
+  ; 
+
+for_sentencia
+  : FOR IDENT IN expresion bloque
+  ;
