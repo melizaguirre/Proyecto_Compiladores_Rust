@@ -1,0 +1,8 @@
+fn main() {
+    let x: i32 = 10;
+    for i in x {
+        if true && false || !false {
+            return;
+        }
+    }
+}
