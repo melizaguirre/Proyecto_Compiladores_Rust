@@ -133,3 +133,68 @@ while_sentencia
 for_sentencia
   : FOR IDENT IN expresion bloque
   ;
+
+argumentos_opt
+  : /* empty */
+  | expresion argumentos_prima
+  ;
+
+argumentos_prima
+  : /* empty */
+  | COMMA expresion argumentos_prima
+  ;
+
+
+expresion
+  : or_expr
+  ;
+
+or_expr
+  : and_expr or_prima
+  ;
+
+or_prima
+  : /* empty */
+  | OP_OR and_expr or_prima
+  ;
+
+and_expr
+  : igualdad and_prima
+  ;
+
+and_prima
+  : /* empty */
+  | OP_AND igualdad and_prima
+  ;
+
+igualdad
+  : relacional igualdad_prima
+  ;
+
+igualdad_prima
+  : /* empty */
+  | OP_EQ relacional igualdad_prima
+  | OP_NEQ relacional igualdad_prima
+  ;
+
+relacional
+  : aditiva relacional_prima
+  ;
+
+relacional_prima
+  : /* empty */
+  | OP_LT aditiva relacional_prima
+  | OP_GT aditiva relacional_prima
+  | OP_LE aditiva relacional_prima
+  | OP_GE aditiva relacional_prima
+  ;
+
+aditiva
+  : multiplicativa aditiva_prima
+  ;
+
+aditiva_prima
+  : /* empty */
+  | OP_ADD multiplicativa aditiva_prima
+  | OP_SUB multiplicativa aditiva_prima
+  ;
