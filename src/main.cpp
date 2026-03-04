@@ -1,11 +1,12 @@
+#include <cstdio>
 #include <iostream>
 
-extern int yylex();
 extern FILE* yyin;
+extern int yyparse();
 
 int main(int argc, char** argv) {
     if (argc < 2) {
-        std::cout << "Uso: ./lexer <archivo.txt>\n";
+        std::cerr << "Uso: ./rust_parser <archivo.txt>\n";
         return 1;
     }
 
@@ -15,14 +16,13 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    std::cout << "=== INICIANDO ANALISIS LEXICO ===\n\n";
-
-    while (yylex()) {
-        // imprime los tokens
-    }
-
-    std::cout << "\n=== FIN DEL ANALISIS ===\n";
+    int result = yyparse();
 
     fclose(yyin);
-    return 0;
+
+    if (result == 0) {
+        std::cout << "Sintaxis correcta\n";
+    }
+
+    return result;
 }

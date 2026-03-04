@@ -1,9 +1,11 @@
+%define parse.error verbose
 %{
 #include <cstdio>
 #include <cstdlib>
 
 int yylex();
 extern int yylineno;
+extern char* yytext;
 void yyerror(const char* s);
 %}
 
@@ -29,8 +31,12 @@ programa
   ;
 
 funciones
+  : funcion funciones_tail
+  ;
+
+funciones_tail
   : /* empty */
-  | funcion funciones
+  | funcion funciones_tail
   ;
 
 funcion
@@ -198,3 +204,48 @@ aditiva_prima
   | OP_ADD multiplicativa aditiva_prima
   | OP_SUB multiplicativa aditiva_prima
   ;
+
+multiplicativa
+  : unaria multiplicativa_prima
+  ;
+
+multiplicativa_prima
+  : /* empty */
+  | OP_MUL unaria multiplicativa_prima
+  | OP_DIV unaria multiplicativa_prima
+  | OP_MOD unaria multiplicativa_prima
+  ;
+
+unaria
+  : OP_NOT unaria
+  | OP_SUB unaria
+  | OP_ADD unaria
+  | primaria
+  ;
+
+primaria
+  : literal
+  | IDENT call_opt
+  | OPEN_PAR expresion CLOSE_PAR
+  ;
+
+
+call_opt
+  : /* empty */
+  | OPEN_PAR argumentos_opt CLOSE_PAR
+  ;
+
+literal
+  : INT_CONST
+  | FLOAT_CONST
+  | STRING_LITERAL
+  | CHAR_LITERAL
+  | TRUE
+  | FALSE
+  ;
+
+%%
+
+void yyerror(const char* s) {
+  std::fprintf(stderr, "Syntax error: %s (line %d)\n", s, yylineno);
+}

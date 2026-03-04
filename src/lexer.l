@@ -1,9 +1,20 @@
-%option noyywrap yylineno
+%option noyywrap yylineno nodefault
 
 %{
+#include "parser.tab.h"
 #include <iostream>
 using namespace std;
+static int emit(int tok, const char* name){
+    cout << "TOKEN: " << name;
+    // imprime lexema solo para IDENT y literales (opcional)
+    if(tok==IDENT || tok==INT_CONST || tok==FLOAT_CONST || tok==STRING_LITERAL || tok==CHAR_LITERAL)
+        cout << " -> " << yytext;
+    cout << "\n";
+    return tok;
+}
 %}
+
+
 
 DIGIT      [0-9]
 LETTER     [a-zA-Z_]
