@@ -1,17 +1,25 @@
 %define parse.error verbose
+
 %{
 #include <cstdio>
 #include <cstdlib>
 #include <string>
 
-extern std::string last_token_text;
-extern int last_token_line;
+
 int yylex();
 extern int yylineno;
 extern char* yytext;
+
+extern std::string last_token_text;
+extern int last_token_line;
+
 void yyerror(const char* s);
 %}
 
+%token FN IDENT
+%token OPEN_PAR CLOSE_PAR
+%token OPEN_CURLY CLOSE_CURLY
+%token COMMA COLON ARROW
 %token FN LET IF ELSE WHILE FOR IN RETURN
 %token T_I32 T_F64 T_BOOL T_CHAR T_STR
 %token TRUE FALSE
@@ -34,12 +42,8 @@ programa
   ;
 
 funciones
-  : funcion funciones_tail
-  ;
-
-funciones_tail
   : /* empty */
-  | funcion funciones_tail
+  | funcion funciones
   ;
 
 funcion
@@ -86,10 +90,6 @@ sentencia
   : let_stmt SEMICOLON
   | id_stmt SEMICOLON
   | return_stmt SEMICOLON
-  | if_sentencia
-  | while_sentencia
-  | for_sentencia
-  | bloque
   ;
 
 let_stmt
@@ -119,28 +119,9 @@ return_stmt
   : RETURN expr_opt
   ;
 
-
 expr_opt
   : /* empty */
   | expresion
-  ;
-
-if_sentencia
-  : IF expresion bloque else_opcional
-  ;
-
-else_opcional
-  : /* empty */
-  | ELSE bloque
-  | ELSE if_sentencia
-  ;
-
-while_sentencia
-  : WHILE expresion bloque
-  ; 
-
-for_sentencia
-  : FOR IDENT IN expresion bloque
   ;
 
 argumentos_opt
@@ -153,49 +134,8 @@ argumentos_prima
   | COMMA expresion argumentos_prima
   ;
 
-
 expresion
-  : or_expr
-  ;
-
-or_expr
-  : and_expr or_prima
-  ;
-
-or_prima
-  : /* empty */
-  | OP_OR and_expr or_prima
-  ;
-
-and_expr
-  : igualdad and_prima
-  ;
-
-and_prima
-  : /* empty */
-  | OP_AND igualdad and_prima
-  ;
-
-igualdad
-  : relacional igualdad_prima
-  ;
-
-igualdad_prima
-  : /* empty */
-  | OP_EQ relacional igualdad_prima
-  | OP_NEQ relacional igualdad_prima
-  ;
-
-relacional
-  : aditiva relacional_prima
-  ;
-
-relacional_prima
-  : /* empty */
-  | OP_LT aditiva relacional_prima
-  | OP_GT aditiva relacional_prima
-  | OP_LE aditiva relacional_prima
-  | OP_GE aditiva relacional_prima
+  : aditiva
   ;
 
 aditiva
@@ -209,21 +149,14 @@ aditiva_prima
   ;
 
 multiplicativa
-  : unaria multiplicativa_prima
+  : primaria multiplicativa_prima
   ;
 
 multiplicativa_prima
   : /* empty */
-  | OP_MUL unaria multiplicativa_prima
-  | OP_DIV unaria multiplicativa_prima
-  | OP_MOD unaria multiplicativa_prima
-  ;
-
-unaria
-  : OP_NOT unaria
-  | OP_SUB unaria
-  | OP_ADD unaria
-  | primaria
+  | OP_MUL primaria multiplicativa_prima
+  | OP_DIV primaria multiplicativa_prima
+  | OP_MOD primaria multiplicativa_prima
   ;
 
 primaria
@@ -231,7 +164,6 @@ primaria
   | IDENT call_opt
   | OPEN_PAR expresion CLOSE_PAR
   ;
-
 
 call_opt
   : /* empty */
@@ -246,7 +178,7 @@ literal
   | TRUE
   | FALSE
   ;
-
+  
 %%
 void yyerror(const char* s) {
     std::fprintf(stderr,

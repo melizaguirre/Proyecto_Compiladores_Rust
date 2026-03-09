@@ -75,8 +75,7 @@ FLOAT      ({DIGIT}+"."{DIGIT}+)
 "}"                { return emit(CLOSE_CURLY, "}"); }
 "("                { return emit(OPEN_PAR, "("); }
 ")"                { return emit(CLOSE_PAR, ")"); }
-"["                { return emit(OPEN_BRACKET, "["); }
-"]"                { return emit(CLOSE_BRACKET, "]"); }
+
 ","                { return emit(COMMA, ","); }
 ";"                { return emit(SEMICOLON, ";"); }
 
