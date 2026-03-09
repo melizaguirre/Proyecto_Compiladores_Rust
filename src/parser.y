@@ -2,7 +2,10 @@
 %{
 #include <cstdio>
 #include <cstdlib>
+#include <string>
 
+extern std::string last_token_text;
+extern int last_token_line;
 int yylex();
 extern int yylineno;
 extern char* yytext;
@@ -245,7 +248,10 @@ literal
   ;
 
 %%
-
 void yyerror(const char* s) {
-  std::fprintf(stderr, "Syntax error: %s (line %d)\n", s, yylineno);
+    std::fprintf(stderr,
+        "Error de sintaxis en linea %d: %s. Found: '%s'\n",
+        last_token_line,
+        s,
+        last_token_text.empty() ? "EOF" : last_token_text.c_str());
 }
