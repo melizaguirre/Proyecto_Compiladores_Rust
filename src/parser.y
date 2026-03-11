@@ -90,6 +90,10 @@ sentencia
   : let_stmt SEMICOLON
   | id_stmt SEMICOLON
   | return_stmt SEMICOLON
+  | if_sentencia
+  | while_sentencia
+  | for_sentencia
+  | bloque
   ;
 
 let_stmt
@@ -123,6 +127,23 @@ expr_opt
   : /* empty */
   | expresion
   ;
+if_sentencia
+  : IF expresion bloque else_opcional
+  ;
+
+else_opcional
+  : /* empty */
+  | ELSE bloque
+  | ELSE if_sentencia
+  ;
+
+while_sentencia
+  : WHILE expresion bloque
+  ;
+
+for_sentencia
+  : FOR IDENT IN expresion bloque
+  ;
 
 argumentos_opt
   : /* empty */
@@ -133,9 +154,48 @@ argumentos_prima
   : /* empty */
   | COMMA expresion argumentos_prima
   ;
-
 expresion
-  : aditiva
+  : or_expr
+  ;
+
+or_expr
+  : and_expr or_prima
+  ;
+
+or_prima
+  : /* empty */
+  | OP_OR and_expr or_prima
+  ;
+
+and_expr
+  : igualdad and_prima
+  ;
+
+and_prima
+  : /* empty */
+  | OP_AND igualdad and_prima
+  ;
+
+igualdad
+  : relacional igualdad_prima
+  ;
+
+igualdad_prima
+  : /* empty */
+  | OP_EQ relacional igualdad_prima
+  | OP_NEQ relacional igualdad_prima
+  ;
+
+relacional
+  : aditiva relacional_prima
+  ;
+
+relacional_prima
+  : /* empty */
+  | OP_LT aditiva relacional_prima
+  | OP_GT aditiva relacional_prima
+  | OP_LE aditiva relacional_prima
+  | OP_GE aditiva relacional_prima
   ;
 
 aditiva
@@ -149,14 +209,21 @@ aditiva_prima
   ;
 
 multiplicativa
-  : primaria multiplicativa_prima
+  : unaria multiplicativa_prima
   ;
 
 multiplicativa_prima
   : /* empty */
-  | OP_MUL primaria multiplicativa_prima
-  | OP_DIV primaria multiplicativa_prima
-  | OP_MOD primaria multiplicativa_prima
+  | OP_MUL unaria multiplicativa_prima
+  | OP_DIV unaria multiplicativa_prima
+  | OP_MOD unaria multiplicativa_prima
+  ;
+
+unaria
+  : OP_NOT unaria
+  | OP_SUB unaria
+  | OP_ADD unaria
+  | primaria
   ;
 
 primaria
