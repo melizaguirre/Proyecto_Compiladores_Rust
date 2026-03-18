@@ -1,4 +1,0 @@
-fn main() {
-    suma(10, 8);
-    return;
-}
