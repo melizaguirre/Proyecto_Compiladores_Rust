@@ -13,12 +13,6 @@ int last_token_line = 1;
 static int emit(int tok, const char* name){
     last_token_text = yytext;
     last_token_line = yylineno;
-
-    cout << "TOKEN: " << name;
-    if(tok == IDENT || tok == INT_CONST || tok == FLOAT_CONST || tok == STRING_LITERAL || tok == CHAR_LITERAL)
-        cout << " -> " << yytext;
-    cout << "\n";
-
     return tok;
 }
 %}

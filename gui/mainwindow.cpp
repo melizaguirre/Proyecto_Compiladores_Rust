@@ -9,6 +9,8 @@
 #include <QFileDialog>
 #include <QString>
 #include <QDir>
+#include <QCoreApplication>
+#include <QFileInfo>
 
 #include <array>
 #include <cstdio>
@@ -16,13 +18,27 @@
 
 static std::string ejecutarParser(const std::string& rutaArchivo)
 {
-    std::string comando = "../rust_parser \"" + rutaArchivo + "\" 2>&1";
+    QString appDir = QCoreApplication::applicationDirPath();
+    QString parserPath = QDir(appDir).filePath("../rust_parser");
+    parserPath = QFileInfo(parserPath).absoluteFilePath();
+
+    QFileInfo info(parserPath);
+    if (!info.exists()) {
+        return "No se encontró el ejecutable en:\n" + parserPath.toStdString();
+    }
+
+    if (!info.isExecutable()) {
+        return "El archivo existe pero no es ejecutable:\n" + parserPath.toStdString();
+    }
+
+    std::string comando = "\"" + parserPath.toStdString() + "\" \"" + rutaArchivo + "\" 2>&1";
+
     std::array<char, 256> buffer;
     std::string resultado;
 
     FILE* pipe = popen(comando.c_str(), "r");
     if (!pipe) {
-        return "No se pudo ejecutar rust_parser.";
+        return "Error ejecutando el parser.";
     }
 
     while (fgets(buffer.data(), buffer.size(), pipe) != nullptr) {
@@ -30,6 +46,11 @@ static std::string ejecutarParser(const std::string& rutaArchivo)
     }
 
     pclose(pipe);
+
+    if (resultado.empty()) {
+        return "No hubo salida del parser.";
+    }
+
     return resultado;
 }
 
@@ -72,10 +93,13 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::seleccionarArchivo()
 {
+    QString carpetaInicial = QDir(QCoreApplication::applicationDirPath()).filePath("../tests");
+    carpetaInicial = QFileInfo(carpetaInicial).absoluteFilePath();
+
     QString archivo = QFileDialog::getOpenFileName(
         this,
         "Seleccionar archivo",
-        "../tests",
+        carpetaInicial,
         "Archivos de texto (*.txt);;Todos los archivos (*)"
     );
 

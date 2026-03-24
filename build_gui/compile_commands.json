@@ -1,0 +1,20 @@
+[
+{
+  "directory": "/home/melizaguirre/Proyecto_Compiladores_Rust/build_gui",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/melizaguirre/Proyecto_Compiladores_Rust/build_gui/gui_app_autogen/include -isystem /usr/include/aarch64-linux-gnu/qt5 -isystem /usr/include/aarch64-linux-gnu/qt5/QtWidgets -isystem /usr/include/aarch64-linux-gnu/qt5/QtGui -isystem /usr/include/aarch64-linux-gnu/qt5/QtCore -isystem /usr/lib/aarch64-linux-gnu/qt5/mkspecs/linux-g++ -std=gnu++17 -fPIC -o CMakeFiles/gui_app.dir/gui_app_autogen/mocs_compilation.cpp.o -c /home/melizaguirre/Proyecto_Compiladores_Rust/build_gui/gui_app_autogen/mocs_compilation.cpp",
+  "file": "/home/melizaguirre/Proyecto_Compiladores_Rust/build_gui/gui_app_autogen/mocs_compilation.cpp",
+  "output": "CMakeFiles/gui_app.dir/gui_app_autogen/mocs_compilation.cpp.o"
+},
+{
+  "directory": "/home/melizaguirre/Proyecto_Compiladores_Rust/build_gui",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/melizaguirre/Proyecto_Compiladores_Rust/build_gui/gui_app_autogen/include -isystem /usr/include/aarch64-linux-gnu/qt5 -isystem /usr/include/aarch64-linux-gnu/qt5/QtWidgets -isystem /usr/include/aarch64-linux-gnu/qt5/QtGui -isystem /usr/include/aarch64-linux-gnu/qt5/QtCore -isystem /usr/lib/aarch64-linux-gnu/qt5/mkspecs/linux-g++ -std=gnu++17 -fPIC -o CMakeFiles/gui_app.dir/gui/main_gui.cpp.o -c /home/melizaguirre/Proyecto_Compiladores_Rust/gui/main_gui.cpp",
+  "file": "/home/melizaguirre/Proyecto_Compiladores_Rust/gui/main_gui.cpp",
+  "output": "CMakeFiles/gui_app.dir/gui/main_gui.cpp.o"
+},
+{
+  "directory": "/home/melizaguirre/Proyecto_Compiladores_Rust/build_gui",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/melizaguirre/Proyecto_Compiladores_Rust/build_gui/gui_app_autogen/include -isystem /usr/include/aarch64-linux-gnu/qt5 -isystem /usr/include/aarch64-linux-gnu/qt5/QtWidgets -isystem /usr/include/aarch64-linux-gnu/qt5/QtGui -isystem /usr/include/aarch64-linux-gnu/qt5/QtCore -isystem /usr/lib/aarch64-linux-gnu/qt5/mkspecs/linux-g++ -std=gnu++17 -fPIC -o CMakeFiles/gui_app.dir/gui/mainwindow.cpp.o -c /home/melizaguirre/Proyecto_Compiladores_Rust/gui/mainwindow.cpp",
+  "file": "/home/melizaguirre/Proyecto_Compiladores_Rust/gui/mainwindow.cpp",
+  "output": "CMakeFiles/gui_app.dir/gui/mainwindow.cpp.o"
+}
+]
