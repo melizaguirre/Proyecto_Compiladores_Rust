@@ -315,12 +315,25 @@ CMakeFiles/gui_app.dir/gui/mainwindow.cpp.o: \
  /usr/include/aarch64-linux-gnu/qt5/QtGui/qtextcursor.h \
  /usr/include/aarch64-linux-gnu/qt5/QtGui/qtextformat.h \
  /usr/include/aarch64-linux-gnu/qt5/QtGui/qpen.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtWidgets/QPlainTextEdit \
+ /usr/include/aarch64-linux-gnu/qt5/QtWidgets/qplaintextedit.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtWidgets/qtextedit.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtGui/qabstracttextdocumentlayout.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtGui/qtextlayout.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtGui/qevent.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtCore/qcoreevent.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtCore/qset.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtCore/qfile.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtCore/qfiledevice.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtGui/qvector2d.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtGui/qtouchdevice.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtGui/qglyphrun.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtGui/qrawfont.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtGui/qfontdatabase.h \
  /usr/include/aarch64-linux-gnu/qt5/QtWidgets/QFileDialog \
  /usr/include/aarch64-linux-gnu/qt5/QtWidgets/qfiledialog.h \
  /usr/include/aarch64-linux-gnu/qt5/QtCore/qdir.h \
  /usr/include/aarch64-linux-gnu/qt5/QtCore/qfileinfo.h \
- /usr/include/aarch64-linux-gnu/qt5/QtCore/qfile.h \
- /usr/include/aarch64-linux-gnu/qt5/QtCore/qfiledevice.h \
  /usr/include/aarch64-linux-gnu/qt5/QtWidgets/qdialog.h \
  /usr/include/aarch64-linux-gnu/qt5/QtCore/QString \
  /usr/include/aarch64-linux-gnu/qt5/QtCore/qstring.h \
@@ -328,7 +341,25 @@ CMakeFiles/gui_app.dir/gui/mainwindow.cpp.o: \
  /usr/include/aarch64-linux-gnu/qt5/QtCore/qdir.h \
  /usr/include/aarch64-linux-gnu/qt5/QtCore/QCoreApplication \
  /usr/include/aarch64-linux-gnu/qt5/QtCore/qcoreapplication.h \
- /usr/include/aarch64-linux-gnu/qt5/QtCore/qcoreevent.h \
  /usr/include/aarch64-linux-gnu/qt5/QtCore/qeventloop.h \
  /usr/include/aarch64-linux-gnu/qt5/QtCore/QFileInfo \
- /usr/include/aarch64-linux-gnu/qt5/QtCore/qfileinfo.h
+ /usr/include/aarch64-linux-gnu/qt5/QtCore/qfileinfo.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtCore/QFile \
+ /usr/include/aarch64-linux-gnu/qt5/QtCore/qfile.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtCore/QTextStream \
+ /usr/include/aarch64-linux-gnu/qt5/QtCore/qtextstream.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtCore/qlocale.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtWidgets/QScrollBar \
+ /usr/include/aarch64-linux-gnu/qt5/QtWidgets/qscrollbar.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtWidgets/qabstractslider.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtCore/QRegularExpression \
+ /usr/include/aarch64-linux-gnu/qt5/QtCore/qregularexpression.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtGui/QTextCursor \
+ /usr/include/aarch64-linux-gnu/qt5/QtGui/qtextcursor.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtGui/QTextCharFormat \
+ /usr/include/aarch64-linux-gnu/qt5/QtGui/qtextformat.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtGui/QColor \
+ /usr/include/aarch64-linux-gnu/qt5/QtGui/qcolor.h \
+ /usr/include/aarch64-linux-gnu/qt5/QtGui/QTextFormat \
+ /usr/include/aarch64-linux-gnu/qt5/QtGui/QTextBlock \
+ /usr/include/aarch64-linux-gnu/qt5/QtGui/qtextobject.h

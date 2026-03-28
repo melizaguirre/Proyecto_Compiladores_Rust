@@ -6,6 +6,7 @@
 class QLabel;
 class QPushButton;
 class QTextEdit;
+class QPlainTextEdit;
 
 class MainWindow : public QMainWindow
 {
@@ -16,14 +17,20 @@ public:
 
 private:
     QLabel *labelRuta;
-    QTextEdit *editorSalida;
     QPushButton *btnSeleccionar;
     QPushButton *btnAnalizar;
+
+    QPlainTextEdit *editorLineas;
+    QPlainTextEdit *editorCodigo;
+    QTextEdit *editorResultado;
 
     QString rutaArchivo;
 
     void seleccionarArchivo();
     void ejecutarAnalisis();
+    void cargarContenidoArchivo(const QString& ruta);
+    void actualizarLineas();
+    void resaltarLineaError(const QString& salida);
 };
 
 #endif

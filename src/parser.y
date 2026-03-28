@@ -33,6 +33,22 @@ void yyerror(const char* s);
 %token INT_CONST FLOAT_CONST STRING_LITERAL CHAR_LITERAL
 %token ERROR
 
+%union {
+    char* str;
+    ASTNode* node;
+    ExprNode* expr;
+    StmtNode* stmt;
+    BlockNode* block;
+    TypeNode* type;
+    ParamNode* param;
+    FunctionNode* func;
+    ProgramNode* program;
+    std::vector<ExprNode*>* expr_list;
+    std::vector<StmtNode*>* stmt_list;
+    std::vector<ParamNode*>* param_list;
+    std::vector<FunctionNode*>* func_list;
+}
+
 %start programa
 
 %%

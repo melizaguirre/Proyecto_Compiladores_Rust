@@ -13,6 +13,7 @@ int last_token_line = 1;
 static int emit(int tok, const char* name){
     last_token_text = yytext;
     last_token_line = yylineno;
+    std::cout << "TOKEN: " << name << " -> " << yytext << std::endl;
     return tok;
 }
 %}
