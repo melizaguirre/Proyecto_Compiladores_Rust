@@ -4,6 +4,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string>
+#include <vector>
+#include "ast.hpp"
 
 
 int yylex();
@@ -14,9 +16,10 @@ extern std::string last_token_text;
 extern int last_token_line;
 
 void yyerror(const char* s);
+ProgramNode* root = nullptr;
 %}
 
-%token FN IDENT
+
 %token OPEN_PAR CLOSE_PAR
 %token OPEN_CURLY CLOSE_CURLY
 %token OPEN_BRACKET CLOSE_BRACKET
@@ -48,6 +51,20 @@ void yyerror(const char* s);
     std::vector<ParamNode*>* param_list;
     std::vector<FunctionNode*>* func_list;
 }
+
+%token <str> IDENT INT_CONST FLOAT_CONST STRING_LITERAL CHAR_LITERAL
+
+%type <program> programa
+%type <func_list> funciones
+%type <func> funcion
+%type <param_list> param_opt param_tail
+%type <param> parametro
+%type <type> tipo ret_opt let_tipo_opt
+%type <block> bloque
+%type <stmt_list> sentencias
+%type <stmt> sentencia let_stmt id_stmt return_stmt if_sentencia while_sentencia for_sentencia else_opcional
+%type <expr> let_init_opt expr_opt expresion and_expr igualdad relacional aditiva multiplicativa unaria primaria literal
+%type <expr_list> argumentos_opt argumentos_prima
 
 %start programa
 
