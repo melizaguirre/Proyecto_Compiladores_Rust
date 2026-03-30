@@ -1,9 +1,13 @@
 %option noyywrap yylineno nodefault
 
 %{
+#include "ast.hpp"
 #include "parser.tab.h"
 #include <iostream>
 #include <string>
+#include <cstring>
+#include <cstdlib>
+#include <vector>
 
 using namespace std;
 
@@ -13,6 +17,14 @@ int last_token_line = 1;
 static int emit(int tok, const char* name){
     last_token_text = yytext;
     last_token_line = yylineno;
+    std::cout << "TOKEN: " << name << " -> " << yytext << std::endl;
+    return tok;
+}
+
+static int emit_text(int tok, const char* name){
+    last_token_text = yytext;
+    last_token_line = yylineno;
+    yylval.str = strdup(yytext);
     std::cout << "TOKEN: " << name << " -> " << yytext << std::endl;
     return tok;
 }
@@ -75,15 +87,13 @@ FLOAT      ({DIGIT}+"."{DIGIT}+)
 
 ","                { return emit(COMMA, ","); }
 ";"                { return emit(SEMICOLON, ";"); }
-
 ":"                { return emit(COLON, ":"); }
 
-\"([^\"\\]|\\.)*\" { return emit(STRING_LITERAL, "STRING"); }
-\'([^\'\\]|\\.)\'  { return emit(CHAR_LITERAL, "CHAR"); }
-{FLOAT}            { return emit(FLOAT_CONST, "FLOAT"); }
-{INT}              { return emit(INT_CONST, "INT"); }
-
-{ID}               { return emit(IDENT, "IDENT"); }
+\"([^\"\\]|\\.)*\" { return emit_text(STRING_LITERAL, "STRING"); }
+\'([^\'\\]|\\.)\'  { return emit_text(CHAR_LITERAL, "CHAR"); }
+{FLOAT}            { return emit_text(FLOAT_CONST, "FLOAT"); }
+{INT}              { return emit_text(INT_CONST, "INT"); }
+{ID}               { return emit_text(IDENT, "IDENT"); }
 
 . {
     cout << "ERROR LEXICO: " << yytext << " en linea " << yylineno << "\n";

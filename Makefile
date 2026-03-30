@@ -18,10 +18,9 @@ $(BUILD)/lex.yy.c: src/lexer.l $(BUILD)/parser.tab.h | $(BUILD)
 	$(FLEX) -o $(BUILD)/lex.yy.c src/lexer.l
 
 $(TARGET): $(BUILD)/parser.tab.c $(BUILD)/lex.yy.c src/main.cpp
-	$(CXX) $(CXXFLAGS) -I$(BUILD) $^ -o $@
+	$(CXX) $(CXXFLAGS) -I$(BUILD) -Isrc $^ -o $@
 
 clean:
 	rm -rf $(BUILD) $(TARGET)
 
 .PHONY: all clean
-

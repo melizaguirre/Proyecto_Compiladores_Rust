@@ -7,7 +7,6 @@
 #include <vector>
 #include "ast.hpp"
 
-
 int yylex();
 extern int yylineno;
 extern char* yytext;
@@ -16,25 +15,9 @@ extern std::string last_token_text;
 extern int last_token_line;
 
 void yyerror(const char* s);
+
 ProgramNode* root = nullptr;
 %}
-
-
-%token OPEN_PAR CLOSE_PAR
-%token OPEN_CURLY CLOSE_CURLY
-%token OPEN_BRACKET CLOSE_BRACKET
-%token COMMA SEMICOLON COLON ARROW
-%token FN LET IF ELSE WHILE FOR IN RETURN
-%token T_I32 T_F64 T_BOOL T_CHAR T_STR
-%token TRUE FALSE
-%token ARROW
-%token OP_AND OP_OR OP_NOT
-%token OP_EQ OP_NEQ OP_LT OP_GT OP_LE OP_GE
-%token OP_ASSIGN OP_ADD OP_SUB OP_MUL OP_DIV OP_MOD
-%token OPEN_CURLY CLOSE_CURLY OPEN_PAR CLOSE_PAR
-%token IDENT
-%token INT_CONST FLOAT_CONST STRING_LITERAL CHAR_LITERAL
-%token ERROR
 
 %union {
     char* str;
@@ -51,6 +34,18 @@ ProgramNode* root = nullptr;
     std::vector<ParamNode*>* param_list;
     std::vector<FunctionNode*>* func_list;
 }
+
+%token FN LET IF ELSE WHILE FOR IN RETURN
+%token T_I32 T_F64 T_BOOL T_CHAR T_STR
+%token TRUE FALSE
+%token OPEN_PAR CLOSE_PAR
+%token OPEN_CURLY CLOSE_CURLY
+%token OPEN_BRACKET CLOSE_BRACKET
+%token COMMA SEMICOLON COLON ARROW
+%token OP_AND OP_OR OP_NOT
+%token OP_EQ OP_NEQ OP_LT OP_GT OP_LE OP_GE
+%token OP_ASSIGN OP_ADD OP_SUB OP_MUL OP_DIV OP_MOD
+%token ERROR
 
 %token <str> IDENT INT_CONST FLOAT_CONST STRING_LITERAL CHAR_LITERAL
 
@@ -72,214 +67,391 @@ ProgramNode* root = nullptr;
 
 programa
   : funciones
+    {
+      $$ = new ProgramNode();
+      $$->functions = *$1;
+      root = $$;
+    }
   ;
 
 funciones
   : /* empty */
+    {
+      $$ = new std::vector<FunctionNode*>();
+    }
   | funcion funciones
+    {
+      $$ = $2;
+      $$->insert($$->begin(), $1);
+    }
   ;
 
 funcion
   : FN IDENT OPEN_PAR param_opt CLOSE_PAR ret_opt bloque
+    {
+      $$ = new FunctionNode($2, *$4, $6, $7);
+    }
   ;
 
 param_opt
   : /* empty */
+    {
+      $$ = new std::vector<ParamNode*>();
+    }
   | parametro param_tail
+    {
+      $$ = $2;
+      $$->insert($$->begin(), $1);
+    }
   ;
 
 param_tail
   : /* empty */
+    {
+      $$ = new std::vector<ParamNode*>();
+    }
   | COMMA parametro param_tail
+    {
+      $$ = $3;
+      $$->insert($$->begin(), $2);
+    }
   ;
 
 parametro
   : IDENT COLON tipo
+    {
+      $$ = new ParamNode($1, $3);
+    }
   ;
 
 ret_opt
   : /* empty */
+    {
+      $$ = nullptr;
+    }
   | ARROW tipo
+    {
+      $$ = $2;
+    }
   ;
 
 tipo
-  : T_I32
-  | T_F64
-  | T_BOOL
-  | T_CHAR
-  | T_STR
+  : T_I32   { $$ = new TypeNode("i32"); }
+  | T_F64   { $$ = new TypeNode("f64"); }
+  | T_BOOL  { $$ = new TypeNode("bool"); }
+  | T_CHAR  { $$ = new TypeNode("char"); }
+  | T_STR   { $$ = new TypeNode("str"); }
   ;
 
 bloque
   : OPEN_CURLY sentencias CLOSE_CURLY
+    {
+      $$ = new BlockNode();
+      $$->statements = *$2;
+    }
   ;
 
 sentencias
   : /* empty */
+    {
+      $$ = new std::vector<StmtNode*>();
+    }
   | sentencia sentencias
+    {
+      $$ = $2;
+      $$->insert($$->begin(), $1);
+    }
   ;
 
 sentencia
-  : let_stmt SEMICOLON
-  | id_stmt SEMICOLON
-  | return_stmt SEMICOLON
-  | if_sentencia
-  | while_sentencia
-  | for_sentencia
-  | bloque
+  : let_stmt SEMICOLON       { $$ = $1; }
+  | id_stmt SEMICOLON        { $$ = $1; }
+  | return_stmt SEMICOLON    { $$ = $1; }
+  | if_sentencia             { $$ = $1; }
+  | while_sentencia          { $$ = $1; }
+  | for_sentencia            { $$ = $1; }
+  | bloque                   { $$ = $1; }
   ;
 
 let_stmt
   : LET IDENT let_tipo_opt let_init_opt
+    {
+      $$ = new LetStmtNode($2, $3, $4);
+    }
   ;
 
 let_tipo_opt
   : /* empty */
+    {
+      $$ = nullptr;
+    }
   | COLON tipo
+    {
+      $$ = $2;
+    }
   ;
 
 let_init_opt
   : /* empty */
+    {
+      $$ = nullptr;
+    }
   | OP_ASSIGN expresion
+    {
+      $$ = $2;
+    }
   ;
 
 id_stmt
-  : IDENT id_stmt_tail
-  ;
-
-id_stmt_tail
-  : OP_ASSIGN expresion
-  | OPEN_PAR argumentos_opt CLOSE_PAR
+  : IDENT OP_ASSIGN expresion
+    {
+      $$ = new AssignStmtNode($1, $3);
+    }
+  | IDENT OPEN_PAR argumentos_opt CLOSE_PAR
+    {
+      $$ = new ExprStmtNode(new CallExprNode($1, *$3));
+    }
   ;
 
 return_stmt
   : RETURN expr_opt
+    {
+      $$ = new ReturnStmtNode($2);
+    }
   ;
 
 expr_opt
   : /* empty */
+    {
+      $$ = nullptr;
+    }
   | expresion
+    {
+      $$ = $1;
+    }
   ;
+
 if_sentencia
   : IF expresion bloque else_opcional
+    {
+      $$ = new IfStmtNode($2, $3, $4);
+    }
   ;
 
 else_opcional
   : /* empty */
+    {
+      $$ = nullptr;
+    }
   | ELSE bloque
+    {
+      $$ = $2;
+    }
   | ELSE if_sentencia
+    {
+      $$ = $2;
+    }
   ;
 
 while_sentencia
   : WHILE expresion bloque
+    {
+      $$ = new WhileStmtNode($2, $3);
+    }
   ;
 
 for_sentencia
   : FOR IDENT IN expresion bloque
+    {
+      $$ = new ForStmtNode($2, $4, $5);
+    }
   ;
 
 argumentos_opt
   : /* empty */
+    {
+      $$ = new std::vector<ExprNode*>();
+    }
   | expresion argumentos_prima
+    {
+      $$ = $2;
+      $$->insert($$->begin(), $1);
+    }
   ;
 
 argumentos_prima
   : /* empty */
+    {
+      $$ = new std::vector<ExprNode*>();
+    }
   | COMMA expresion argumentos_prima
+    {
+      $$ = $3;
+      $$->insert($$->begin(), $2);
+    }
   ;
+
 expresion
-  : or_expr
-  ;
-
-or_expr
-  : and_expr or_prima
-  ;
-
-or_prima
-  : /* empty */
-  | OP_OR and_expr or_prima
+  : expresion OP_OR and_expr
+    {
+      $$ = new BinaryExprNode($1, "||", $3);
+    }
+  | and_expr
+    {
+      $$ = $1;
+    }
   ;
 
 and_expr
-  : igualdad and_prima
-  ;
-
-and_prima
-  : /* empty */
-  | OP_AND igualdad and_prima
+  : and_expr OP_AND igualdad
+    {
+      $$ = new BinaryExprNode($1, "&&", $3);
+    }
+  | igualdad
+    {
+      $$ = $1;
+    }
   ;
 
 igualdad
-  : relacional igualdad_prima
-  ;
-
-igualdad_prima
-  : /* empty */
-  | OP_EQ relacional igualdad_prima
-  | OP_NEQ relacional igualdad_prima
+  : igualdad OP_EQ relacional
+    {
+      $$ = new BinaryExprNode($1, "==", $3);
+    }
+  | igualdad OP_NEQ relacional
+    {
+      $$ = new BinaryExprNode($1, "!=", $3);
+    }
+  | relacional
+    {
+      $$ = $1;
+    }
   ;
 
 relacional
-  : aditiva relacional_prima
-  ;
-
-relacional_prima
-  : /* empty */
-  | OP_LT aditiva relacional_prima
-  | OP_GT aditiva relacional_prima
-  | OP_LE aditiva relacional_prima
-  | OP_GE aditiva relacional_prima
+  : relacional OP_LT aditiva
+    {
+      $$ = new BinaryExprNode($1, "<", $3);
+    }
+  | relacional OP_GT aditiva
+    {
+      $$ = new BinaryExprNode($1, ">", $3);
+    }
+  | relacional OP_LE aditiva
+    {
+      $$ = new BinaryExprNode($1, "<=", $3);
+    }
+  | relacional OP_GE aditiva
+    {
+      $$ = new BinaryExprNode($1, ">=", $3);
+    }
+  | aditiva
+    {
+      $$ = $1;
+    }
   ;
 
 aditiva
-  : multiplicativa aditiva_prima
-  ;
-
-aditiva_prima
-  : /* empty */
-  | OP_ADD multiplicativa aditiva_prima
-  | OP_SUB multiplicativa aditiva_prima
+  : aditiva OP_ADD multiplicativa
+    {
+      $$ = new BinaryExprNode($1, "+", $3);
+    }
+  | aditiva OP_SUB multiplicativa
+    {
+      $$ = new BinaryExprNode($1, "-", $3);
+    }
+  | multiplicativa
+    {
+      $$ = $1;
+    }
   ;
 
 multiplicativa
-  : unaria multiplicativa_prima
-  ;
-
-multiplicativa_prima
-  : /* empty */
-  | OP_MUL unaria multiplicativa_prima
-  | OP_DIV unaria multiplicativa_prima
-  | OP_MOD unaria multiplicativa_prima
+  : multiplicativa OP_MUL unaria
+    {
+      $$ = new BinaryExprNode($1, "*", $3);
+    }
+  | multiplicativa OP_DIV unaria
+    {
+      $$ = new BinaryExprNode($1, "/", $3);
+    }
+  | multiplicativa OP_MOD unaria
+    {
+      $$ = new BinaryExprNode($1, "%", $3);
+    }
+  | unaria
+    {
+      $$ = $1;
+    }
   ;
 
 unaria
   : OP_NOT unaria
+    {
+      $$ = new UnaryExprNode("!", $2);
+    }
   | OP_SUB unaria
+    {
+      $$ = new UnaryExprNode("-", $2);
+    }
   | OP_ADD unaria
+    {
+      $$ = new UnaryExprNode("+", $2);
+    }
   | primaria
+    {
+      $$ = $1;
+    }
   ;
 
 primaria
   : literal
-  | IDENT call_opt
+    {
+      $$ = $1;
+    }
+  | IDENT
+    {
+      $$ = new IdentifierNode($1);
+    }
+  | IDENT OPEN_PAR argumentos_opt CLOSE_PAR
+    {
+      $$ = new CallExprNode($1, *$3);
+    }
   | OPEN_PAR expresion CLOSE_PAR
-  ;
-
-call_opt
-  : /* empty */
-  | OPEN_PAR argumentos_opt CLOSE_PAR
+    {
+      $$ = $2;
+    }
   ;
 
 literal
   : INT_CONST
+    {
+      $$ = new LiteralNode($1);
+    }
   | FLOAT_CONST
+    {
+      $$ = new LiteralNode($1);
+    }
   | STRING_LITERAL
+    {
+      $$ = new LiteralNode($1);
+    }
   | CHAR_LITERAL
+    {
+      $$ = new LiteralNode($1);
+    }
   | TRUE
+    {
+      $$ = new LiteralNode("true");
+    }
   | FALSE
+    {
+      $$ = new LiteralNode("false");
+    }
   ;
-  
+
 %%
+
 void yyerror(const char* s) {
     std::fprintf(stderr,
         "Error de sintaxis en linea %d: %s. Found: '%s'\n",
