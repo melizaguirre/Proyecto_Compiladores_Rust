@@ -1,5 +1,0 @@
-/home/melizaguirre/Proyecto_Compiladores_Rust/build_gui/CMakeFiles/gui_app.dir
-/home/melizaguirre/Proyecto_Compiladores_Rust/build_gui/CMakeFiles/edit_cache.dir
-/home/melizaguirre/Proyecto_Compiladores_Rust/build_gui/CMakeFiles/rebuild_cache.dir
-/home/melizaguirre/Proyecto_Compiladores_Rust/build_gui/CMakeFiles/gui_app_autogen_timestamp_deps.dir
-/home/melizaguirre/Proyecto_Compiladores_Rust/build_gui/CMakeFiles/gui_app_autogen.dir
